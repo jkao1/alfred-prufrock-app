@@ -13,14 +13,9 @@ var dotenv = require("dotenv");
 dotenv.load();
 
 // Controllers
-<<<<<<< HEAD
 var HomeController = require("./controllers/home");
 var languageController = require("./controllers/language");
 var timelineController = require("./controllers/timeline");
-=======
-var HomeController = require("./controllers/home.js");
-var languageController = require("./controllers/language.js");
->>>>>>> origin/jason
 
 var app = express();
 
