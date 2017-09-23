@@ -3,6 +3,8 @@ body{
 	margin:10px auto;
 }
 circle{
+  width: 15px;
+  height: 15px;
   fill:white;
   stroke:steelblue;  
   stroke-width:2px;
@@ -18,10 +20,9 @@ line{
 #incMatx text{
 	text-anchor:middle;
 	cursor:default;
+	z-index: 100;
 }
-#treesvg g text:hover, #treesvg g circle:hover{
-	cursor:pointer;
-}
+
 #navdiv{
 	background:#555;
 }
@@ -36,6 +37,7 @@ line{
 }
 #g_labels text{
 	text-anchor:middle;
+	z-index: 100;
 }
 #g_elabels text{
 	text-anchor:middle;
