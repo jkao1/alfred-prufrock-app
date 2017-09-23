@@ -5,7 +5,7 @@ const Language = require('@google-cloud/language');
 const language = Language();
 
 // The text to analyze
-const text = 'I am interested in UM.';
+const text = 'Bob likes dogs.';
 
 function analyzeText(text) {
   return new Promise((resolve, reject) => {
