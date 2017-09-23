@@ -125,25 +125,22 @@ export function destroy(req, res) {
 
 
 function getTextInfo(text) {
-  console.log('reached the holy land');
   return new Promise(function(resolve, reject) {
     const document = {
-      'content': text,
-      type: 'PLAIN_TEXT'
+      "content": text,
+      "type": 'PLAIN_TEXT'
     };
 
     // Detects the sentiment of the text
-    language.analyzeEntites({document})
+    language.analyzeEntitySentiment({document: document})
       .then(results => {
         const { entities } = results[0];
-
-        let ary = [];
-
-        entities.forEach(entity => {
-          ary.push(entity.name);
+        const ary = entities.map(entity => {
+          return {
+            name: entity.name,
+            sentiment: entity.sentiment
+          }
         });
-
-        console.log('ary: ', ary);
         //console.log('len ', entities.length);
         //let lastEntity = entities[entities.length-1];
 
@@ -159,8 +156,6 @@ function getTextInfo(text) {
 }
 
 export function check(req, res) {
-  console.log('this got called here');
-  console.log(req.body.text);
   let text = req.body.text;
 
   return getTextInfo(text)

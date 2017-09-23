@@ -15,13 +15,20 @@ export class FreewriteComponent {
 
   test() { 
     const { editorText } = this;
-    console.log(editorText);
-    if (editorText.substring(editorText.length-1) === " " || 
-      editorText.substring(editorText.length-1) === "." || 
-      editorText.substring(editorText.length-6) === "&nbsp;") {      
-      this.$http.post('/api/things/test/check', {text: editorText.replace("&nbsp;", " ")})
+    const fixedText = editorText.replace("&nbsp;", " ");
+    console.log(fixedText);
+    if (fixedText.substring(fixedText.length-1) === " " || 
+      fixedText.substring(fixedText.length-1) === "." || 
+      fixedText.substring(fixedText.length-6) === "&nbsp;") {
+      this.$http.post('/api/things/test/check', {text: fixedText.replace("&nbsp;", " ")})
         .then(response => {
-          this.result = response.data[response.data.length - 1];
+          const entity = response.data[response.data.length - 1];
+          this.entity = response.data[response.data.length - 1];
+          const currentText = document.getElementById('editor').innerHTML;
+          const n = currentText.lastIndexOf(entity.name);
+          const bolded = currentText.replace(entity.name, `<b>${entity.name}</b>`);
+          document.getElementById('editor').innerHTML = 
+            currentText.slice(0, n) + bolded + currentText.slice(n + entity.name.length);
         })
         .catch(console.log);
     }
