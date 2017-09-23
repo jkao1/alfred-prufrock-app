@@ -126,7 +126,6 @@ export function destroy(req, res) {
 
 function getTextInfo(text) {
   return new Promise(function(resolve, reject) {
-    console.log('this got called here too');
     const document = {
       'content': text,
       type: 'PLAIN_TEXT'
@@ -134,12 +133,10 @@ function getTextInfo(text) {
 
     // Detects the sentiment of the text
     language.analyzeEntities({document})
-      .then((results) => {
-        let entities = results[0].entities;
+      .then(results => {
+        const { entities } = results[0];
 
         let ary = [];
-        console.log('here are the entities');
-        console.log(JSON.stringify(entities, null, 2));
 
         entities.forEach(entity => {
           ary.push(entity.name);
