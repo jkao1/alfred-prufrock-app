@@ -9,19 +9,13 @@ exports.languagePost = (req, res) => {
     content: req,
     type: "PLAIN_TEXT",
   };
+  console.log('start');
   language
-    .analyzeEntities({ document })
+    .analyzeEntities({ document })  
     .then(results => {
       const entities = results[0].entities;
-
-      console.log("Entities:");
-      entities.forEach(entity => {
-        console.log(entity.name);
-        console.log(` - Type: ${entity.type}, Salience: ${entity.salience}`);
-        if (entity.metadata && entity.metadata.wikipedia_url) {
-          console.log(` - Wikipedia URL: ${entity.metadata.wikipedia_url}$`);
-        }
-      });
+      console.log(entities);
+      res.status(200).end();
     })
     .catch(err => {
       console.error("ERROR:", err);
