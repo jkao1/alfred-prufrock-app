@@ -1,13 +1,28 @@
 /**
+ * Convert graph data to array
+ * 
+ * @param {String} input Data to graph
+ * @returns {Object} Array of string nodes for graph
+ */
+
+function typeChecker(input) {
+    if (typeof input === 'object') { return Object.values(input); }
+    else { return input.split(' '); }
+}
+
+/**
  * Generate timeline tree
+ * @param {Object} data Input data for graph
  */
 function tree(data) {
-    var svgW = 958, svgH = 460, vRad = 12, tree = { cx: 300, cy: 30, w: 40, h: 70 };
-    tree.vis = { v: 0, l: data[0], p: { x: tree.cx, y: tree.cy }, c: [] };
+    data = typeChecker(data);
+    var dataIndex = 0;
+    var svgW = window.innerWidth, svgH = window.innerHeight, vRad = 30, tree = { cx: 300, cy: 50, w: 80, h: 100 };
+    tree.vis = { v: 0, l: data[dataIndex], p: { x: tree.cx, y: tree.cy }, c: [] };
     tree.size = 1;
     tree.glabels = [];
     tree.incMatx = [];
-    tree.incX = 500, tree.incY = 30, tree.incS = 20;
+    tree.incX = 1000, tree.incY = 30 * 2, tree.incS = 20 * 2;
 
     tree.getVertices = function () {
         var v = [];
@@ -31,7 +46,7 @@ function tree(data) {
 
     tree.addLeaf = function (_) {
         function addLeaf(t) {
-            if (t.v == _) { t.c.push({ v: tree.size++, l: '?', p: {}, c: [] }); return; }
+            if (t.v == _) { t.c.push({ v: tree.size++, l: data[dataIndex++], p: {}, c: [] }); return; }
             t.c.forEach(addLeaf);
         }
         addLeaf(tree.vis);
@@ -40,44 +55,13 @@ function tree(data) {
             tree.glabels = []
             relabel(
                 {
-                    lbl: d3.range(0, tree.size).map(function (d) { return data[1]; }),
+                    lbl: d3.range(0, tree.size).map(function (d) { return data[dataIndex++]; }),
                     incMatx: d3.range(0, tree.size - 1).map(function () { return 0; })
                 });
             d3.select("#labelnav").style('visibility', 'hidden');
         }
         else tree.incMatx = d3.range(0, tree.size - 1).map(function () { return 0; });
         redraw();
-    }
-
-    tree.gracefulLabels = function () {
-        tree.glabels = [], v = tree.getVertices();
-        var vlbls = [], elbls = [];
-        gracefulLbl = function (c) {
-            if (c == tree.size) {
-                var lbl = { lbl: vlbls.map(function (_) { return _; }) };
-                relabel(lbl);
-                updateIncMatx();
-                var incMatx = tree.incMatx.map(function (_) { return _; });
-                if ((tree.incMatx[0] & 2) >> 1 == 1 && tree.glabels.every(function (d) { return d.incMatx.toString() != incMatx.toString(); })) {
-                    lbl.incMatx = incMatx;
-                    tree.glabels.push(lbl);
-                }
-                return;
-            }
-            d3.range(0, tree.size)
-                .filter(function (d) { return (vlbls.indexOf(d) == -1) && (elbls.indexOf(Math.abs(vlbls[v[c].f.v] - d)) == -1); })
-                .forEach(function (d) {
-                    vlbls[c] = d;
-                    elbls[c] = Math.abs(vlbls[v[c].f.v] - d);
-                    gracefulLbl(c + 1);
-                    delete vlbls[c];
-                    delete elbls[c];
-                });
-        }
-        d3.range(0, tree.size).forEach(function (d) { vlbls = [d]; elbls = []; gracefulLbl(1); });
-        tree.showLabel(1);
-        d3.select("#labelpos").text(tree.currLbl + '/' + tree.glabels.length);
-        d3.select("#labelnav").style('visibility', 'visible');
     }
 
     updateIncMatx = function () {
@@ -115,48 +99,69 @@ function tree(data) {
         var edges = d3.select("#g_lines").selectAll('line').data(tree.getEdges());
 
         edges.transition().duration(500)
-            .attr('x1', function (d) { return d.p1.x; }).attr('y1', function (d) { return d.p1.y; })
-            .attr('x2', function (d) { return d.p2.x; }).attr('y2', function (d) { return d.p2.y; })
+            .attr('x1', function (d) { return d.p1.x; })
+            .attr('y1', function (d) { return d.p1.y; })
+            .attr('x2', function (d) { return d.p2.x; })
+            .attr('y2', function (d) { return d.p2.y; })
 
         edges.enter().append('line')
-            .attr('x1', function (d) { return d.p1.x; }).attr('y1', function (d) { return d.p1.y; })
-            .attr('x2', function (d) { return d.p1.x; }).attr('y2', function (d) { return d.p1.y; })
+            .attr('x1', function (d) { return d.p1.x; })
+            .attr('y1', function (d) { return d.p1.y; })
+            .attr('x2', function (d) { return d.p1.x; })
+            .attr('y2', function (d) { return d.p1.y; })
             .transition().duration(500)
-            .attr('x2', function (d) { return d.p2.x; }).attr('y2', function (d) { return d.p2.y; });
+            .attr('x2', function (d) { return d.p2.x; })
+            .attr('y2', function (d) { return d.p2.y; });
 
         var circles = d3.select("#g_circles").selectAll('circle').data(tree.getVertices());
 
-        circles.transition().duration(500).attr('cx', function (d) { return d.p.x; }).attr('cy', function (d) { return d.p.y; });
+        circles.transition().duration(500)
+            .attr('cx', function (d) { return d.p.x; })
+            .attr('cy', function (d) { return d.p.y; });
 
-        circles.enter().append('circle').attr('cx', function (d) { return d.f.p.x; }).attr('cy', function (d) { return d.f.p.y; }).attr('r', vRad)
-            .on('click', function (d) { return tree.addLeaf(d.v); })
-            .transition().duration(500).attr('cx', function (d) { return d.p.x; }).attr('cy', function (d) { return d.p.y; });
+        circles.enter().append('circle')
+            .attr('cx', function (d) { return d.f.p.x; })
+            .attr('cy', function (d) { return d.f.p.y; })
+            .attr('r', vRad)
+            .on('dblclick', function (d) { return tree.addLeaf(d.v); })
+            .transition().duration(500)
+            .attr('cx', function (d) { return d.p.x; })
+            .attr('cy', function (d) { return d.p.y; });
 
         var labels = d3.select("#g_labels").selectAll('text').data(tree.getVertices());
 
         labels.text(function (d) { return d.l; }).transition().duration(500)
-            .attr('x', function (d) { return d.p.x; }).attr('y', function (d) { return d.p.y + 5; });
+            .attr('x', function (d) { return d.p.x; })
+            .attr('y', function (d) { return d.p.y + 5; });
 
-        labels.enter().append('text').attr('x', function (d) { return d.f.p.x; }).attr('y', function (d) { return d.f.p.y + 5; })
-            .text(function (d) { return d.l; }).on('click', function (d) { return tree.addLeaf(d.v); })
+        labels.enter().append('text')
+            .attr('x', function (d) { return d.f.p.x; })
+            .attr('y', function (d) { return d.f.p.y + 5; })
+            .text(function (d) { return d.l; })
+            .attr('contenteditable', "true").on('dblclick', function (d) { return tree.addLeaf(d.v); })
             .transition().duration(500)
-            .attr('x', function (d) { return d.p.x; }).attr('y', function (d) { return d.p.y + 5; });
+            .attr('x', function (d) { return d.p.x; })
+            .attr('y', function (d) { return d.p.y + 5; });
 
         var elabels = d3.select("#g_elabels").selectAll('text').data(tree.getEdges());
 
         elabels
-            .attr('x', function (d) { return (d.p1.x + d.p2.x) / 2 + (d.p1.x < d.p2.x ? 8 : -8); }).attr('y', function (d) { return (d.p1.y + d.p2.y) / 2; })
+            .attr('x', function (d) { return (d.p1.x + d.p2.x) / 2 + (d.p1.x < d.p2.x ? 8 : -8); })
+            .attr('y', function (d) { return (d.p1.y + d.p2.y) / 2; })
             .text(function (d) { return tree.glabels.length == 0 ? '' : Math.abs(d.l1 - d.l2); });
 
         elabels.enter().append('text')
-            .attr('x', function (d) { return (d.p1.x + d.p2.x) / 2 + (d.p1.x < d.p2.x ? 8 : -8); }).attr('y', function (d) { return (d.p1.y + d.p2.y) / 2; })
+            .attr('x', function (d) { return (d.p1.x + d.p2.x) / 2 + (d.p1.x < d.p2.x ? 8 : -8); })
+            .attr('y', function (d) { return (d.p1.y + d.p2.y) / 2; })
             .text(function (d) { return tree.glabels.length == 0 ? '' : Math.abs(d.l1 - d.l2); });
 
         d3.select("#incMatx").selectAll('.incrowlabel').data(d3.range(0, tree.size)).enter()
-            .append('text').attr('class', 'incrowlabel');
+            .append('text')
+            .attr('class', 'incrowlabel');
 
         d3.select("#incMatx").selectAll('.incrowlabel').text(function (d) { return d; })
-            .attr('x', function (d, i) { return (i - 0.5) * tree.incS }).attr('y', function (d, i) { return (i + 0.8) * tree.incS });
+            .attr('x', function (d, i) { return (i - 0.5) * tree.incS })
+            .attr('y', function (d, i) { return (i + 0.8) * tree.incS });
     }
 
     getLeafCount = function (_) {
@@ -175,52 +180,44 @@ function tree(data) {
     }
 
     initialize = function () {
-        d3.select("body").append("div").attr('id', 'navdiv');
+        d3.select("body").append("div")
+            .attr('id', 'navdiv');
 
-        d3.select("#navdiv").append("button").attr('type', 'button').text('Generate labels')
-            .on('click', function (d) { return tree.gracefulLabels(); });
+        d3.select("#navdiv").append("nav")
+            .attr('id', 'labelnav').style('display', 'inline-block').style('visibility', 'hidden');
 
-        d3.select("#navdiv").append("nav").attr('id', 'labelnav').style('display', 'inline-block').style('visibility', 'hidden');
+        d3.select("#labelnav").append("text").text('')
+            .attr('id', 'labelpos');
 
-        d3.select("#labelnav").append("button").attr('type', 'button').text('<').attr('id', 'prevlabel')
-            .on('click', function (d) { return tree.showLabel(tree.currLbl == 1 ? tree.glabels.length : tree.currLbl - 1); });
+        d3.select("body").append("svg")
+            .attr("width", svgW)
+            .attr("height", svgH)
+            .attr('id', 'treesvg')
+            .attr('style', 'overflow-y: scroll');
 
-        d3.select("#labelnav").append("text").text('').attr('id', 'labelpos');
+        d3.select("#treesvg").append('g')
+            .attr('id', 'g_lines').selectAll('line').data(tree.getEdges()).enter().append('line')
+            .attr('x1', function (d) { return d.p1.x; })
+            .attr('y1', function (d) { return d.p1.y; })
+            .attr('x2', function (d) { return d.p2.x; })
+            .attr('y2', function (d) { return d.p2.y; });
 
-        d3.select("#labelnav").append("button").attr('type', 'button').text('>').attr('id', 'nextlabel')
-            .on('click', function () { return tree.showLabel(tree.currLbl == tree.glabels.length ? 1 : tree.currLbl + 1); });
-
-        d3.select("body").append("svg").attr("width", svgW).attr("height", svgH).attr('id', 'treesvg');
-
-        d3.select("#treesvg").append('g').attr('id', 'g_lines').selectAll('line').data(tree.getEdges()).enter().append('line')
-            .attr('x1', function (d) { return d.p1.x; }).attr('y1', function (d) { return d.p1.y; })
-            .attr('x2', function (d) { return d.p2.x; }).attr('y2', function (d) { return d.p2.y; });
-
-        d3.select("#treesvg").append('g').attr('id', 'g_circles').selectAll('circle').data(tree.getVertices()).enter()
-            .append('circle').attr('cx', function (d) { return d.p.x; }).attr('cy', function (d) { return d.p.y; }).attr('r', vRad)
+        d3.select("#treesvg").append('g')
+            .attr('id', 'g_circles').selectAll('circle').data(tree.getVertices()).enter()
+            .append('circle')
+            .attr('cx', function (d) { return d.p.x; })
+            .attr('cy', function (d) { return d.p.y; })
+            .attr('r', vRad)
             .on('click', function (d) { return tree.addLeaf(d.v); });
 
-        d3.select("#treesvg").append('g').attr('id', 'g_labels').selectAll('text').data(tree.getVertices()).enter().append('text')
-            .attr('x', function (d) { return d.p.x; }).attr('y', function (d) { return d.p.y + 5; }).text(function (d) { return d.l; })
-            .on('click', function (d) { return tree.addLeaf(d.v); });
-
-        d3.select("#treesvg").append('g').attr('id', 'g_elabels').selectAll('text').data(tree.getEdges()).enter().append('text')
-            .attr('x', function (d) { return (d.p1.x + d.p2.x) / 2 + (d.p1.x < d.p2.x ? 8 : -8); }).attr('y', function (d) { return (d.p1.y + d.p2.y) / 2; })
-            .text(function (d) { return tree.glabels.length == 0 ? '' : Math.abs(d.l1 - d.l2); });
-
-        d3.select("body").select("svg").append('g').attr('transform', function () { return 'translate(' + tree.incX + ',' + tree.incY + ')'; })
-            .attr('id', 'incMatx').selectAll('.incrow')
-            .data(tree.incMatx.map(function (d, i) { return { i: i, r: d }; })).enter().append('g').attr('class', 'incrow');
-
-        d3.select("#incMatx").selectAll('.incrowlabel').data(d3.range(0, tree.size)).enter()
-            .append('text').attr('class', 'incrowlabel').text(function (d) { return d; })
-            .attr('x', function (d, i) { return (i - 0.5) * tree.incS }).attr('y', function (d, i) { return (i + .8) * tree.incS });
-
-        tree.addLeaf(0);
-        tree.addLeaf(0);
+        d3.select("#treesvg").append('g')
+            .attr('id', 'g_labels').selectAll('text').data(tree.getVertices()).enter().append('text')
+            .attr('x', function (d) { return d.p.x; })
+            .attr('y', function (d) { return d.p.y + 5; }).text(function (d) { return d.l; })
+            .on('dblclick', function (d) { return tree.addLeaf(d.v); });
     }
     initialize();
 
     return tree;
 }
-var tree = tree(['test', 1]);
+var tree = tree({1: 'Point', 2: 'MHacks X', 3: 'Awesome', 4: 'Amazing!'});
