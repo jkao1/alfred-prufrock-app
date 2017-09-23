@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  .container        
+    .row
+      .col-md
+        div#editor(contenteditable)
+  script(type='text/javascript' src='https://code.jquery.com/jquery-3.2.1.min.js' integrity='sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=' crossorigin="anonymous")
+  script.
+    document.getElementById('editor').addEventListener("input", function() {
+      const text = document.getElementById('editor').innerHTML;
+      $.post('/language');
+    }, false);
+
