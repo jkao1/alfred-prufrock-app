@@ -5,19 +5,18 @@ const language = Language();
  * POST /language
  */
 exports.languagePost = (req, res) => {
+  console.log(req.body)
   const document = {
-    content: req,
+    content: req.body.text,
     type: "PLAIN_TEXT",
   };
-  console.log('start');
-  language
-    .analyzeEntities({ document })  
-    .then(results => {
-      const entities = results[0].entities;
-      console.log(entities);
-      res.status(200).end();
-    })
-    .catch(err => {
-      console.error("ERROR:", err);
-    });
+  language.analyzeEntities({ document })
+  .then(response => {
+    const { entities } = response[0];
+    console.log(entities[0])
+    res.send(entities[entities.length - 1].name);
+  })
+  .catch((err) => {
+    console.error('ERROR:', err);
+  });
 };
