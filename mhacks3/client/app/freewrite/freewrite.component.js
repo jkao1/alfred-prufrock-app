@@ -15,8 +15,11 @@ export class FreewriteComponent {
 
   test() { 
     const { editorText } = this;
-    if (editorText.substring(editorText.length-1) === " ") {      
-      this.$http.post('/api/things/test/check', {text: editorText})
+    console.log(editorText);
+    if (editorText.substring(editorText.length-1) === " " || 
+      editorText.substring(editorText.length-1) === "." || 
+      editorText.substring(editorText.length-6) === "&nbsp;") {      
+      this.$http.post('/api/things/test/check', {text: editorText.replace("&nbsp;", " ")})
         .then(response => {
           this.result = response.data[response.data.length - 1];
         })

@@ -125,6 +125,7 @@ export function destroy(req, res) {
 
 
 function getTextInfo(text) {
+  console.log('reached the holy land');
   return new Promise(function(resolve, reject) {
     const document = {
       'content': text,
@@ -132,7 +133,7 @@ function getTextInfo(text) {
     };
 
     // Detects the sentiment of the text
-    language.analyzeEntities({document})
+    language.analyzeEntites({document})
       .then(results => {
         const { entities } = results[0];
 

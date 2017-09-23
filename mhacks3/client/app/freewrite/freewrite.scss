@@ -1,3 +1,37 @@
 #editor {
   height: 80vh
 }
+
+#editor > span.red-1 {
+  text-decoration: underline;
+  text-decoration-color: #FF1E16;
+}
+#editor > span.red-2 {
+  text-decoration: underline;
+  text-decoration-color: #E51B14;
+}
+#editor > span.red-3 {
+  text-decoration: underline;
+  text-decoration-color: #BF1610;
+}
+#editor > span.red-4 {
+  text-decoration: underline;
+  text-decoration-color: #7F0F0B;
+}
+
+#editor > span.green-1 {
+  text-decoration: underline;
+  text-decoration-color: #00FF0B;
+}
+#editor > span.green-2 {
+  text-decoration: underline;
+  text-decoration-color: #00E50A;
+}
+#editor > span.green-3 {
+  text-decoration: underline;
+  text-decoration-color: #00BF08;
+}
+#editor > span.green-4 {
+  text-decoration: underline;
+  text-decoration-color: #007F06;
+}
