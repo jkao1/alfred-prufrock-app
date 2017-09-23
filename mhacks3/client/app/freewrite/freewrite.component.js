@@ -13,17 +13,12 @@ export class FreewriteComponent {
     this.editorText;
   }
 
-  test() {
-    let editorText = this.editorText;
-    //this.editorText = document.querySelector('#editor');
-    console.log('first log: ', editorText);
-    console.log(editorText.substring(editorText.length-1, editorText.length));
-    if (editorText.substring(editorText.length-1, editorText.length) == " ") {
-      console.log('it workd');
+  test() { 
+    const { editorText } = this;
+    if (editorText.substring(editorText.length-1) === " ") {      
       this.$http.post('/api/things/test/check', {text: editorText})
         .then(response => {
-          this.result = response.data;
-          console.log(this.result);
+          this.result = response.data[response.data.length - 1];
         })
         .catch(console.log);
     }

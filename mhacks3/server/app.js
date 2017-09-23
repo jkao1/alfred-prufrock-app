@@ -10,6 +10,9 @@ mongoose.Promise = require('bluebird');
 import config from './config/environment';
 import http from 'http';
 import seedDatabaseIfNeeded from './config/seed';
+import dotenv from "dotenv";
+
+dotenv.load()
 
 // Connect to MongoDB
 mongoose.connect(config.mongo.uri, config.mongo.options);
