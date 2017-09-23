@@ -6,6 +6,6 @@ block content
   script.
     document.getElementById('editor').addEventListener("input", function() {
       const text = document.getElementById('editor').innerHTML;
-      $.post('/language');
+      $.post('/language',{ text });
     }, false);
 

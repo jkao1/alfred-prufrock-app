@@ -13,8 +13,8 @@ var dotenv = require("dotenv");
 dotenv.load();
 
 // Controllers
-var HomeController = require("./controllers/home");
-var languageController = require("./controllers/language");
+var HomeController = require("./controllers/home.js");
+var languageController = require("./controllers/language.js");
 
 var app = express();
 
@@ -32,7 +32,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
-  }),
+  })
 );
 app.use(flash());
 app.use(express.static(path.join(__dirname, "public")));
