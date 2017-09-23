@@ -15,6 +15,7 @@ dotenv.load();
 // Controllers
 var HomeController = require("./controllers/home");
 var languageController = require("./controllers/language");
+var timelineController = require("./controllers/timeline");
 
 var app = express();
 
@@ -38,6 +39,7 @@ app.use(flash());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", HomeController.index);
+app.get("/timeline", timelineController.timeline);
 app.post("/language", languageController.languagePost);
 
 // Production error handler

@@ -6,7 +6,7 @@ const language = Language();
  */
 exports.languagePost = (req, res) => {
   const document = {
-    content: "George Washington",
+    content: req,
     type: "PLAIN_TEXT",
   };
   language
