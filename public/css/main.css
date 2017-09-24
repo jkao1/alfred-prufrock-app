@@ -17,6 +17,12 @@
 body{
   display: flex;
   flex-direction: column;
+* {
+  font-family: "Libre Baskerville";
+}
+
+body {
+  padding: 15px;
 }
 #container {
   display: table;
@@ -98,3 +104,39 @@ line{
 g#incMatx {
   display: none;
 }
+
+div#editor a {
+  text-decoration: none;
+}
+
+div#editor a.red-1 {
+  display: inline-block;
+  background: #e4b9b9;
+  color: black;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
