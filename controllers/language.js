@@ -22,7 +22,8 @@ exports.languagePost = (req, res) => {
     content,
     type: "HTML",
   };
-  language.analyzeEntities({ document })
+
+  language.analyzeEntitySentiment({ document })
     .then(response => {
       const { entities } = response[0];
       return language.analyzeSyntax({ document })
