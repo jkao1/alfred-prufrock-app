@@ -3,7 +3,7 @@ extends layout
 block content
       
     div#container
-      div#editor(contenteditable)
+      div#editor(contenteditable='true', placeholder='Write you thoughts...')
       div#tree-container
       script(type='text/javascript' src='https://code.jquery.com/jquery-3.2.1.min.js' integrity='sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=' crossorigin="anonymous")
       script(src="http://d3js.org/d3.v3.min.js")
@@ -71,11 +71,21 @@ block content
                 if (!atEndOfSentence) {
                   tree.addLeaf(tree.size - 1, entity.name);
                 }
-                
+                let className = '';
+                const { sentiment: {score, magnitude }} = entity;
+                if(score > 0.6 && magnitude >= 2.5) {
+                    className = 'red-3'
+                }
+                if(score > 0.4 && magnitude >= 1.5) {
+                    className = 'red-2'
+                }
+                if(score > 0.2 && magnitude >= 0.5) {
+                    className = 'red-1'
+                }
                 editor.innerHTML = text.substring(
                   0, 
                   text.length - (atEndOfSentence ? 7 : 6) - entity.name.length
-                ) + `<a href="" class="red-1">${entity.name}${atEndOfSentence ? "." : ""}</a>&nbsp;`;
+                ) + `<a href="" class=${className}>${entity.name}${atEndOfSentence ? "." : ""}</a>&nbsp;`;
                 setEndOfContenteditable(editor);
               }
             });
