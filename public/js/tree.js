@@ -45,7 +45,44 @@ function tree(){
     else tree.incMatx = d3.range(0,tree.size-1).map(function(){ return 0;});
     redraw();
   }
-  
+
+  tree.removeLeaf = function(_, l){
+    // _ can be the index i.e attr('index')
+    function removeLeaf(t){
+      if (!t.c) return;
+      const toPop = t.c.find(c => c.v === _);
+      if (toPop) {
+        t.c.pop(toPop);
+        tree.size--;
+        return;
+      } else {
+        t.c.forEach(removeLeaf);
+      }
+    }
+    removeLeaf(tree.vis);
+    tree.removeNode(_);
+    reposition(tree.vis);
+    if(tree.glabels.length != 0){
+      tree.glabels =[]
+      relabel(
+        {
+          lbl:d3.range(0, tree.size).map(function(d){ return '?';}), 
+          incMatx:d3.range(0,tree.size-1).map(function(){ return 0;})
+        });
+      d3.select("#labelnav").style('visibility','hidden');
+    }
+    else tree.incMatx = d3.range(0,tree.size-1).map(function(){ return 0;});
+    redraw();
+  }
+  tree.removeNode = function(i){
+    $(`g#g_circles circle:nth-child(${i})`).remove();
+    $(`g#g_labels text:nth-child(${i})`).remove();
+    if (i <= 1) {
+      $(`g#g_lines line:first-child`).remove();
+    } else {
+      $(`g#g_lines line:nth-child(${i-1})`).remove();
+    }
+  }
   tree.gracefulLabels = function(){
     tree.glabels =[], v = tree.getVertices();
     var vlbls =[], elbls=[];
