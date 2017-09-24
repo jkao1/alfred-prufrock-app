@@ -128,7 +128,7 @@ function getTextInfo(text) {
   return new Promise(function(resolve, reject) {
     const document = {
       "content": text,
-      "type": 'PLAIN_TEXT'
+      "type": 'HTML'
     };
 
     // Detects the sentiment of the text
@@ -138,7 +138,8 @@ function getTextInfo(text) {
         const ary = entities.map(entity => {
           return {
             name: entity.name,
-            sentiment: entity.sentiment
+            sentiment: entity.sentiment,
+            type: entity.type
           }
         });
         //console.log('len ', entities.length);
