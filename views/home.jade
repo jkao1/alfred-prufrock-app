@@ -33,9 +33,19 @@ block content
       let leafNumber = 0;
       editor.addEventListener("input", function() {
         const text = document.getElementById('editor').innerHTML;
+
+        const lastSentence = text.substring(text.length - 7) === ".&nbsp;" ?
+          text.substring(text.substring(0, text.lastIndexOf(".")).lastIndexOf(".")) :
+          text.substring(text.lastIndexOf("."));/*
         const lastSentence = text.substring(text.length - 7) === ".&nbsp;" ?
           text.substring(text.substring(0, text.lastIndexOf(".")).lastIndexOf(".")) :
           text.substring(text.lastIndexOf("."));
+        const lastSentence = text.substring(text.length - 7) === "?&nbsp;" ?
+          text.substring(text.substring(0, text.lastIndexOf("?")).lastIndexOf("?")) :
+          text.substring(text.lastIndexOf("?"));
+        const lastSentence = text.substring(text.length - 7) === ";&nbsp;" ?
+          text.substring(text.substring(0, text.lastIndexOf(";")).lastIndexOf(";")) :
+          text.substring(text.lastIndexOf(";"));*/
         console.log(lastSentence);
         if (text.substring(text.length - 6) === "&nbsp;") {
           $.post('/language', {"text": lastSentence}, res => {
