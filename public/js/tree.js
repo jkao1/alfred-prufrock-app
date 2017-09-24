@@ -1,5 +1,5 @@
 function tree(){
-  var svgW=958, svgH =460, vRad=12, tree={cx:300, cy:30, w:40, h:70};
+  var globalIndex=0, svgW=958, svgH =460, vRad=12, tree={cx:300, cy:30, w:40, h:70};
   tree.vis={v:0, l:'', p:{x:tree.cx, y:tree.cy},c:[]}; 
   tree.size=1;
   tree.glabels =[];
@@ -125,7 +125,7 @@ function tree(){
 
     circles.transition().duration(500).attr('cx',function(d){ return d.p.x;}).attr('cy',function(d){ return d.p.y;});
     
-    circles.enter().append('circle').attr('cx',function(d){ return d.f.p.x;}).attr('cy',function(d){ return d.f.p.y;}).attr('r',vRad)
+    circles.enter().append('circle').attr('cx',function(d){ return d.f.p.x;}).attr('cy',function(d){ return d.f.p.y;}).attr('r',vRad).attr('index', globalIndex+=1)
       .on('click',function(d){return tree.addLeaf(d.v);})
       .transition().duration(500).attr('cx',function(d){ return d.p.x;}).attr('cy',function(d){ return d.p.y;});
       
@@ -208,6 +208,7 @@ function tree(){
 
     d3.select("#treesvg").append('g').attr('id','g_circles').selectAll('circle').data(tree.getVertices()).enter()
       .append('circle').attr('cx',function(d){ return d.p.x;}).attr('cy',function(d){ return d.p.y;}).attr('r',vRad)
+      .attr('index', globalIndex++)
       .on('click',function(d){return tree.addLeaf(d.v);});
       
     d3.select("#treesvg").append('g').attr('id','g_labels').selectAll('text').data(tree.getVertices()).enter().append('text')
