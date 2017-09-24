@@ -3,6 +3,10 @@ html {
   min-height: 100%;
 }
 
+* {
+  font-family: "Libre Baskerville";
+}
+
 body {
   padding: 15px;
 }
@@ -81,3 +85,39 @@ line{
 g#incMatx {
   display: none;
 }
+
+div#editor a {
+  text-decoration: none;
+}
+
+div#editor a.red-1 {
+  display: inline-block;
+  background: #e4b9b9;
+  color: black;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
