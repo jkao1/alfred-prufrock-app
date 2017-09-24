@@ -48,10 +48,19 @@ function tree(){
 
   tree.removeLeaf = function(_, l){
     // _ can be the index i.e attr('index')
+    function removeChildrenNodes(t) {
+      tree.removeNode(t.v);
+      if (t.c.length === 0) return;
+      else {
+        t.c.forEach(removeChildrenNodes);
+      }
+
+    }
     function removeLeaf(t){
       if (!t.c) return;
       const toPop = t.c.find(c => c.v === _);
-      if (toPop) {
+      if (toPop) {      
+        removeChildrenNodes(toPop);        
         t.c.pop(toPop);
         tree.size--;
         return;
@@ -72,7 +81,7 @@ function tree(){
       d3.select("#labelnav").style('visibility','hidden');
     }
     else tree.incMatx = d3.range(0,tree.size-1).map(function(){ return 0;});
-    redraw();
+    redraw(); 
   }
   tree.removeNode = function(i){
     $(`g#g_circles circle:nth-child(${i})`).remove();
