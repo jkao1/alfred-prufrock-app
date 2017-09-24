@@ -14,15 +14,12 @@
   z-index: 100;
   margin-bottom: 100px;
 }
-body{
-  display: flex;
-  flex-direction: column;
 * {
   font-family: "Libre Baskerville";
 }
 
 body {
-  padding: 15px;
+  padding: 0;
   background: #fafafa;
 }
 #container {
@@ -108,6 +105,7 @@ g#incMatx {
 
 div#editor a {
   text-decoration: none;
+  vertical-align: bottom;
 }
 
 div#editor a.red-1 {
