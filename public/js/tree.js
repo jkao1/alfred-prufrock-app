@@ -1,6 +1,6 @@
 function tree(){
   var svgW=958, svgH =460, vRad=12, tree={cx:300, cy:30, w:40, h:70};
-  tree.vis={v:0, l:'?', p:{x:tree.cx, y:tree.cy},c:[]}; 
+  tree.vis={v:0, l:'', p:{x:tree.cx, y:tree.cy},c:[]}; 
   tree.size=1;
   tree.glabels =[];
   tree.incMatx =[];
@@ -200,7 +200,7 @@ function tree(){
     d3.select("#labelnav").append("button").attr('type','button').text('>').attr('id','nextlabel')
       .on('click',function(){return tree.showLabel(tree.currLbl == tree.glabels.length? 1: tree.currLbl+1);});      
             
-    d3.select("body").append("svg").attr("width", svgW).attr("height", svgH).attr('id','treesvg');
+    d3.select("#container").append("svg").attr("width", svgW).attr("height", svgH).attr('id','treesvg');
 
     d3.select("#treesvg").append('g').attr('id','g_lines').selectAll('line').data(tree.getEdges()).enter().append('line')
       .attr('x1',function(d){ return d.p1.x;}).attr('y1',function(d){ return d.p1.y;})
@@ -232,8 +232,6 @@ function tree(){
   return tree;
 }
 var tree= tree();
-
-tree.addLeaf(0, 'hi');
 
 
 
