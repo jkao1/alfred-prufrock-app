@@ -4,12 +4,14 @@ const language = Language();
 var pastEntities = [];
 
 /**
- * POST /language
+ * analyzeSyntax
+ * pastEntities store previous "NOUN" tokens (partOfSpeech.tag).
+ * For every new token, we check matching lemmas & text.content.
  */
 exports.languagePost = (req, res) => {
   const document = {
     content: req.body.text.substring(0, req.body.text.length - 6),
-    type: "PLAIN_TEXT",
+    type: "HTML",
   };
   language.analyzeEntities({ document })
     .then(response => {
@@ -17,12 +19,11 @@ exports.languagePost = (req, res) => {
       entities.forEach(entity => {
         if (!pastEntities.find(pastEntity => pastEntity.name === entity.name)) {
           pastEntities.push(entity);
-          console.log(pastEntities, entity);
           res.send(entity);
         }
       });
     })
-    .catch((err) => {
+    .catch(err => {
       console.error('ERROR:', err);
     });
 };
