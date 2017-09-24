@@ -1,16 +1,22 @@
 extends layout
 
 block content
-  div#editor(contenteditable)
-  script(type='text/javascript' src='https://code.jquery.com/jquery-3.2.1.min.js' integrity='sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=' crossorigin="anonymous")
-  script.
-    document.getElementById('editor').addEventListener("input", function() {
-      const text = document.getElementById('editor').innerHTML;
-      const lastElement = text.split(" ")[text.split(" ").length - 1];
-      if (text.substring(text.length - 6) === "&nbsp;") {
-        $.post('/language', {"text": lastElement}, entity => {
-          const editor = document.getElementById('editor');
-        });
-      }
-    }, false);
-
+  div#container
+    div#editor(contenteditable)
+    script(type='text/javascript' src='https://code.jquery.com/jquery-3.2.1.min.js' integrity='sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=' crossorigin="anonymous")
+    script(src="http://d3js.org/d3.v3.min.js")
+    script(src="/js/tree.js")
+    script.
+      let leafNumber = 1;
+      document.getElementById('editor').addEventListener("input", function() {
+        const text = document.getElementById('editor').innerHTML;
+        const lastElement = text.split(" ")[text.split(" ").length - 1];
+        if (text.substring(text.length - 6) === "&nbsp;") {
+          $.post('/language', {"text": lastElement}, entity => {
+            if (entity) {
+              tree.addLeaf(leafNumber, entity.name);
+              leafNumber++;
+            }
+          });
+        }
+      }, false);
