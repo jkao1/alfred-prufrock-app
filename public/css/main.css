@@ -139,6 +139,12 @@ g#incMatx {
   display: none;
 }
 
+[contenteditable=true]:empty:before {
+  content: attr(placeholder);
+  color: #909090;
+  display: block; /* For Firefox */
+}
+
 div#editor {
   line-height: 1.5em;
     font-family: "Libre Baskerville", serif;
@@ -150,35 +156,19 @@ div#editor {
 div#editor a {
   text-decoration: none;
   vertical-align: bottom;
-}
-
-div#editor a.red-1 {
   display: inline-block;
-  background: #e4b9b9;
   color: black;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+div#editor a.red-1 { background: #EF9A9A; }
+div#editor a.red-2 { background: #E57373; }
+div#editor a.red-3 { background: #EF5350; }
+div#editor a.green-1 { background: #C5E1A5; }
+div#editor a.green-2 { background: #AED581; }
+div#editor a.green-3 { background: #9CCC65; }
+div#editor a.blue-1 { background: #81D4FA; }
+div#editor a.blue-2 { background: #4FC3F7; }
+div#editor a.blue-3 { background: #29B6F6; }
 
 
 
