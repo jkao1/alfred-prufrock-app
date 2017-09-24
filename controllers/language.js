@@ -7,6 +7,7 @@ var pastEntities = [];
  * analyzeSyntax
  * pastEntities store previous "NOUN" tokens (partOfSpeech.tag).
  * For every new token, we check matching lemmas & text.content.
+ * base font size of node on salience.
  */
 exports.languagePost = (req, res) => {
   const document = {
