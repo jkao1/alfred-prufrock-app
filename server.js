@@ -41,6 +41,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", HomeController.index);
 app.get("/tree", treeController.tree);
 app.post("/language", languageController.languagePost);
+app.post("/clearEntities", languageController.clearEntities);
 
 // Production error handler
 if (app.get("env") === "production") {

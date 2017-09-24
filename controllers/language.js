@@ -1,7 +1,12 @@
 const Language = require("@google-cloud/language");
 const language = Language();
 
-var pastEntities = [];
+let pastEntities = [];
+
+exports.clearEntities = (req, res) => {
+  pastEntities = [];
+  res.send({status: "success"});
+}
 
 /**
  * analyzeSyntax
