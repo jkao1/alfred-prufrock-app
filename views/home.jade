@@ -31,7 +31,6 @@ block content
         }
       script.
         const editor = document.getElementById('editor');
-        let leafNumber = 0;
         editor.addEventListener("input", function() {
           const text = document.getElementById('editor').innerHTML;
 
@@ -49,12 +48,30 @@ block content
             text.substring(text.lastIndexOf(";"));*/
           console.log(lastSentence);
           if (text.substring(text.length - 6) === "&nbsp;") {
+
             $.post('/language', {"text": lastSentence}, res => {
-              const { entity } = res;
+
+              const { entity, NSUBJ, DOBJ, rootToken } = res;
+
               if (entity && entity.name.indexOf(" ") === -1) {
-                tree.addLeaf(leafNumber, entity.name);
-                leafNumber++;
+
                 const atEndOfSentence = text.substring(text.length - 7) === ".&nbsp;";
+
+                if (atEndOfSentence && NSUBJ && DOBJ) {
+                  if (NSUBJ.attachToLabel) {
+                    console.log('attached');
+                    parentNode = tree.findNodeByLabel(NSUBJ.attachToLabel);
+                    tree.addLeaf(parentNode.v, DOBJ.text.content)
+                  } else {
+                    console.log('unattached')
+                    tree.addLeaf(tree.size - 1, NSUBJ.text.content);
+                    tree.addLeaf(tree.size - 1, DOBJ.text.content);
+                  }
+                }
+                if (!atEndOfSentence) {
+                  tree.addLeaf(tree.size - 1, entity.name);
+                }
+                
                 editor.innerHTML = text.substring(
                   0, 
                   text.length - (atEndOfSentence ? 7 : 6) - entity.name.length
