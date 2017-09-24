@@ -1,0 +1,25 @@
+<div class="container">
+  <script src="./tree.js"></script>
+
+  <div>
+    <textarea name="name" class="col-xs-7" ng-model="freewriteCtrl.editorText" ng-change="freewriteCtrl.test()" data-ng-trim="false" class="form-control col-xs-7"></textarea>
+    <div id="theTreeDiv">
+    </div>
+    <mind-map></mind-map>
+  </div>
+
+
+  <!--<div contenteditable id="editor">-->
+  </div>
+
+<!--
+  <student name = "Mahesh"></student><br/>
+  <student name = "Piyush"></student>
+-->
+
+
+
+  <div>
+    {{freewriteCtrl.result}}
+  </div>
+</div>
