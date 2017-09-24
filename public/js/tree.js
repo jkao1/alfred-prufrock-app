@@ -57,6 +57,7 @@ function tree(){
     }
     else tree.incMatx = d3.range(0,tree.size-1).map(function(){ return 0;});
     redraw();
+    $.post('/addImage', {treeSize:tree.size});
   }
 
   tree.removeLeaf = function(_, l){

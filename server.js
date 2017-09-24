@@ -40,6 +40,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", HomeController.index);
 app.get("/tree", treeController.tree);
+app.post("/addImage", treeController.addImage);
 app.post("/language", languageController.languagePost);
 app.post("/clearEntities", languageController.clearEntities);
 
