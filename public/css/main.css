@@ -19,9 +19,12 @@ body {
   padding: 7px;
   width: 50%;
   vertical-align: top;
+  max-height: 100px;
+    overflow: auto;
 }
 
 svg#treesvg {
+  overflow-y: scroll;
   display: table-cell;
   width: 100%;
 }
