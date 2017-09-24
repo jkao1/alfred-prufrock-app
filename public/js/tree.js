@@ -25,6 +25,19 @@ function tree(){
     getEdges(tree.vis);
     return e.sort(function(a,b){ return a.v2 - b.v2;}); 
   }
+
+  tree.findNodeByLabel = function(label) {
+    let targetNode = null;
+    function searchTree(t) {
+      const target = t.c.find(child => child.l == label);
+      if (target) {
+        targetNode = target;
+      }
+      return t.c.forEach(searchTree);
+    }
+    searchTree(tree.vis);
+    return targetNode;
+  }
   
   tree.addLeaf = function(_, l){
     function addLeaf(t){
