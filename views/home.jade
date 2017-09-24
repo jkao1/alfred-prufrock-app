@@ -73,34 +73,35 @@ block content
                 }
                 let className = '';
                 const { sentiment: {score, magnitude }} = entity;
-                if(score > 0.8 && magnitude >= 1) {
+                if(score > 0.3 && magnitude >= .4) {
                     className = 'green-3'
                 }
-                if(score > 0.5 && magnitude >= 0.5) {
+                if(score > 0.2 && magnitude >= 0.2) {
                     className = 'green-2'
                 }
-                if(score > 0.05 && magnitude >= 0.1) {
+                if(score > 0.05 && magnitude >= 0) {
                     className = 'green-1'
                 }
-
-                if (score < -0.4 && magnitude >= 1) {
-                    className = 'red-3'
-                }                
-                if (score < -2.5 && magnitude >= 0.2) {
-                  className = 'red-2'
-                  }
-                if (score < -0.1 && magnitude >= .1) {
-                  className = 'red-1';
-                  }
+                  if (score < -0.4 && magnitude >= .4) {
+                      className = 'red-3'
+                  }                
+                  if (score < -.2 && magnitude >= 0.2) {
+                    className = 'red-2'
+                    }
+                  if (score < -0.5 && magnitude >= 0) {
+                    className = 'red-1';
+                    }
+                    
                 editor.innerHTML = text.substring(
                   0, 
                   text.length - (atEndOfSentence ? 7 : 6) - entity.name.length
                 ) + `<a href="" class=${className}>${entity.name}${atEndOfSentence ? "." : ""}</a>&nbsp;`;
                 setEndOfContenteditable(editor);
-              }
+              };
             });
-          }
-        }, false);
+
+            }
+          }, false);
 
 
 

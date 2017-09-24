@@ -69,7 +69,7 @@ body {
 #editor {
   display: table-cell;
   padding: 7px;
-  width: 50%;
+  width: 60%;
   vertical-align: top;
   max-height: 100px;
   overflow: auto;
@@ -91,6 +91,10 @@ body {
 svg#treesvg {
   width: 99%;
   height: 100%;
+}
+
+svg#treesvg g {
+  transform: translateX(-150px);
 }
 
 circle{
