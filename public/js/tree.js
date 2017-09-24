@@ -200,7 +200,7 @@ function tree(){
     d3.select("#labelnav").append("button").attr('type','button').text('>').attr('id','nextlabel')
       .on('click',function(){return tree.showLabel(tree.currLbl == tree.glabels.length? 1: tree.currLbl+1);});      
             
-    d3.select("#container").append("svg").attr("width", svgW).attr("height", svgH).attr('id','treesvg');
+    d3.select("#tree-container").append("svg").attr("width", svgW).attr("height", svgH).attr('id','treesvg');
 
     d3.select("#treesvg").append('g').attr('id','g_lines').selectAll('line').data(tree.getEdges()).enter().append('line')
       .attr('x1',function(d){ return d.p1.x;}).attr('y1',function(d){ return d.p1.y;})
