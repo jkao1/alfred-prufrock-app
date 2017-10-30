@@ -1,14 +1,179 @@
-html {
+*, *:before, *:after, html{
+  padding: 0px;
+  margin: 0px;
+  overflow: hidden;
+} html {
   position: relative;
   min-height: 100%;
 }
 
+.mdl-layout__container {
+  padding: 0px 30px;
+  width: auto !important;
+}
+
+.navbar li {
+  float: left;
+  top:-14px;
+  position:relative;
+  padding: 4px 10px;
+}
+
+.navbar li:last-child a {
+  color: #000;
+  font-family: "Libre Baskerville";
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.navbar li:last-child {
+  float: right;
+}
+
+.navbar li a {
+  display: block;
+  font-weight: 400;
+  font-family: "Helvetica Neue";
+  text-decoration: none;
+  font-size:14px;
+ transition-duration: .4s;
+  color: #a8a8a8;
+}
+.navbar li a:hover {
+  color: #000;
+  text-decoration: underline;
+}
+
+
+.header {
+  width: 100%;
+  height: 200px;
+  position: fixed;
+  z-index: 100;
+  margin-bottom: 100px;
+}
+* {
+  font-family: "Libre Baskerville";
+}
+
 body {
-  margin-bottom: 44px;
+  padding: 0;
+  background: #fafafa;
+}
+#container {
+  display: table;
+  width: 100%;
+  height: 100%;
 }
 
 #editor {
-  border: 1px solid #000;
+  display: table-cell;
   padding: 7px;
-  height: 80vh;
+  width: 60%;
+  vertical-align: top;
+  max-height: 100px;
+  overflow: auto;
 }
+.header {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 240px;
+}
+#tree-container {
+  overflow: scroll;
+  display: table-cell;
+  width: 100%;
+  height: 100%;
+}
+
+svg#treesvg {
+  width: 99%;
+  height: 100%;
+}
+
+svg#treesvg g {
+  transform: translateX(-150px);
+}
+
+circle{
+  fill:white;
+  stroke:steelblue;  
+  stroke-width:2px;
+}
+line{
+  stroke:grey;
+  stroke-width:3px;
+}
+.incRect{
+  stroke:grey;
+  shape-rendering:crispEdges;
+}
+#incMatx text{
+  text-anchor:middle;
+  cursor:default;
+}
+#treesvg g text:hover, #treesvg g circle:hover{
+  cursor:pointer;
+}
+#navdiv{
+  background:#555;
+}
+#treesvg{
+}
+#labelpos{
+  color:white;
+}
+#navdiv button, #navdiv textarea{
+  vertical-align:middle;
+}
+#g_labels text{
+  text-anchor:middle;
+}
+#g_elabels text{
+  text-anchor:middle;
+  fill:red;
+  font-weight:bold;
+}
+
+#navdiv {
+  display: none;
+}
+g#incMatx {
+  display: none;
+}
+
+[contenteditable=true]:empty:before {
+  content: attr(placeholder);
+  color: #909090;
+  display: block; /* For Firefox */
+}
+
+div#editor {
+  line-height: 1.5em;
+    font-family: "Libre Baskerville", serif;
+    color: #111;
+    font-size: 17px;
+    outline:none;
+  }
+
+div#editor a {
+  vertical-align: bottom;
+  display: inline-block;
+  color: black;
+}
+
+div#editor a.red-1 { background: #EF9A9A; }
+div#editor a.red-2 { background: #E57373; }
+div#editor a.red-3 { background: #EF5350; }
+div#editor a.green-1 { background: #C5E1A5; }
+div#editor a.green-2 { background: #AED581; }
+div#editor a.green-3 { background: #9CCC65; }
+div#editor a.blue-1 { background: #81D4FA; }
+div#editor a.blue-2 { background: #4FC3F7; }
+div#editor a.blue-3 { background: #29B6F6; }
+
+
+
+

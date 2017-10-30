@@ -15,13 +15,13 @@ dotenv.load();
 // Controllers
 var HomeController = require("./controllers/home");
 var languageController = require("./controllers/language");
-var timelineController = require("./controllers/timeline");
+var treeController = require("./controllers/tree");
 
 var app = express();
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT || 9000);
 app.use(compression());
 app.use(logger("dev"));
 app.use(bodyParser.json());
@@ -39,8 +39,10 @@ app.use(flash());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", HomeController.index);
-app.get("/timeline", timelineController.timeline);
+app.get("/tree", treeController.tree);
+app.post("/addImage", treeController.addImage);
 app.post("/language", languageController.languagePost);
+app.post("/clearEntities", languageController.clearEntities);
 
 // Production error handler
 if (app.get("env") === "production") {
