@@ -1,4 +1,7 @@
+**Update from 2 years 8 months later (6/1/2020): [Nadieh Bremer's bubble chart/dependency graph](https://whydocatsanddogs.com/cats) is cooler**
+
 # Alfred Prufrock Editor  
+
 Also known as Think Freely. 🌳 A web application, built on Node.js and Express, with Jade, D3, and GCP's NLP API to augment free-writing. Constructs, real-time, a tree that holds dependent nouns as nodes and recursively creates edges using morphology and syntax analysis. Edit
 Add topics
 
